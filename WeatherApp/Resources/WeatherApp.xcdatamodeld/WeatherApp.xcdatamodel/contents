@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="19B88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CityEntity" representedClassName=".CityEntity" syncable="YES">
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="weatherInfo" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WeatherInfoEntity" inverseName="city" inverseEntity="WeatherInfoEntity"/>
+    </entity>
+    <entity name="WeatherInfoEntity" representedClassName=".WeatherInfoEntity" syncable="YES">
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="humidity" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="isCurrentWeather" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="temperature" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="temperatureMax" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="temperatureMin" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="windSpeed" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="city" maxCount="1" deletionRule="Cascade" destinationEntity="CityEntity" inverseName="weatherInfo" inverseEntity="CityEntity"/>
+    </entity>
+    <elements>
+        <element name="CityEntity" positionX="-126.65625" positionY="-3.0703125" width="128" height="118"/>
+        <element name="WeatherInfoEntity" positionX="156.42578125" positionY="17.16015625" width="128" height="163"/>
+    </elements>
+</model>

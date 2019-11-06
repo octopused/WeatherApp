@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--City Search View Controller-->
+        <scene sceneID="cOB-XP-35j">
+            <objects>
+                <viewController storyboardIdentifier="CitySearchViewController" id="d49-yZ-TsH" customClass="CitySearchViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="48E-qq-0Xz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8a5-6d-64y">
+                                <rect key="frame" x="0.0" y="100" width="414" height="762"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </tableView>
+                            <searchBar contentMode="redraw" placeholder="Enter city name" translatesAutoresizingMaskIntoConstraints="NO" id="atq-yF-8Cb">
+                                <rect key="frame" x="0.0" y="44" width="414" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="atq-yF-8Cb" firstAttribute="trailing" secondItem="F41-Kt-Qtm" secondAttribute="trailing" id="0py-nX-Qwq"/>
+                            <constraint firstItem="8a5-6d-64y" firstAttribute="leading" secondItem="F41-Kt-Qtm" secondAttribute="leading" id="OOi-Mm-XDU"/>
+                            <constraint firstItem="F41-Kt-Qtm" firstAttribute="bottom" secondItem="8a5-6d-64y" secondAttribute="bottom" id="fsX-Ty-Zhf"/>
+                            <constraint firstItem="atq-yF-8Cb" firstAttribute="leading" secondItem="F41-Kt-Qtm" secondAttribute="leading" id="lt3-r1-Rmj"/>
+                            <constraint firstItem="8a5-6d-64y" firstAttribute="top" secondItem="atq-yF-8Cb" secondAttribute="bottom" id="v7m-tm-WWT"/>
+                            <constraint firstItem="atq-yF-8Cb" firstAttribute="top" secondItem="F41-Kt-Qtm" secondAttribute="top" id="vM4-im-ugD"/>
+                            <constraint firstItem="F41-Kt-Qtm" firstAttribute="trailing" secondItem="8a5-6d-64y" secondAttribute="trailing" id="wT4-jD-wNJ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="F41-Kt-Qtm"/>
+                    </view>
+                    <connections>
+                        <outlet property="searchBar" destination="atq-yF-8Cb" id="997-HA-Rz6"/>
+                        <outlet property="tableView" destination="8a5-6d-64y" id="Awr-nA-eAO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bcf-6n-rGC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7" y="106"/>
+        </scene>
+    </scenes>
+</document>
