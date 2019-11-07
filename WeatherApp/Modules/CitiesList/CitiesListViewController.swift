@@ -30,6 +30,7 @@ final class CitiesListViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tableView.visibleCells.forEach { $0.setSelected(false, animated: true) }
+        output?.viewDidAppear()
     }
 
     func setupUI() {
@@ -68,6 +69,17 @@ extension CitiesListViewController: CitiesListViewInput {
     func enableAddCityButton(_ isEnabled: Bool) {
         addNewCityButton.setTitleColor(isEnabled ? .black : .lightGray, for: .normal)
         addNewCityButton.isEnabled = isEnabled
+    }
+    
+    func setActivityIndicator(for city: City, isRunning: Bool) {
+        if tableView.superview == nil {
+            return
+        }
+        guard let indexPath = adapter?.indexPath(for: city),
+            let cell = tableView.cellForRow(at: indexPath) as? CitiesListTableViewCell else {
+            return
+        }
+        cell.setActivityIndicator(isRunning: isRunning)
     }
     
     func reloadView() {

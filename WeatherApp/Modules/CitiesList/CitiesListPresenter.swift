@@ -33,9 +33,13 @@ class CitiesListPresenter {
         return cities ?? []
     }
     
-    func getCities() -> [City] {
+    func getCities(isFirstLaunch: Bool = false) -> [City] {
         let cityEntites = CoreDataManager.shared.allEntities(type: CityEntity.self, entityName: CityEntity.entityName)
-        return cityEntites.map { City(cityEntity: $0) }
+        var cities = cityEntites.map { City(cityEntity: $0) }
+        if cities.count == 0 && isFirstLaunch {
+            cities = preloadCities()
+        }
+        return cities
     }
     
     func fetchWeatherInfo(for city: City) -> [WeatherInfo] {
@@ -48,33 +52,35 @@ class CitiesListPresenter {
     }
     
     func loadWeatherInfo(for city: City, completion: @escaping ([WeatherInfo]) -> Void) {
-        if NetworkManager.shared.connectionStatus == .unavailable {
-            completion(fetchWeatherInfo(for: city))
-        } else {
-            weatherService.getWeatherForecast(cityId: city.id) { [weak self] (result) in
-                switch result {
-                case .success(let forecastResponse):
-                    let weatherInfoList = WeatherInfo.initFrom(forecastResponse: forecastResponse)
-                    CoreDataManager.shared.synchronize(weatherInfoList: weatherInfoList, in: .background)
-                    completion(weatherInfoList)
-                case .failure(let error):
-                    print(error)
-                    completion(self?.fetchWeatherInfo(for: city) ?? [])
-                }
+        weatherService.getWeatherForecast(cityId: city.id) { (result) in
+            switch result {
+            case .success(let forecastResponse):
+                let weatherInfoList = WeatherInfo.initFrom(forecastResponse: forecastResponse)
+                CoreDataManager.shared.synchronize(weatherInfoList: weatherInfoList, in: .background)
+                completion(weatherInfoList)
+            case .failure(let error):
+                print(error)
+                completion([])
             }
         }
     }
     
     func displayWeather(for city: City) {
-        loadWeatherInfo(for: city) { [weak self] (weatherInfoList) in
-            guard let self = self else {
-                return
-            }
-            self.weatherInfoList.removeAll(where: { $0.city == city })
-            self.weatherInfoList.append(contentsOf: weatherInfoList)
-            self.view?.set(weatherInfoList: self.weatherInfoList)
-            DispatchQueue.main.async { [weak self] in
-                self?.view?.reloadView()
+        if NetworkManager.shared.connectionStatus != .unavailable {
+            view?.setActivityIndicator(for: city, isRunning: true)
+            loadWeatherInfo(for: city) { [weak self] (weatherInfoList) in
+                guard let self = self else {
+                    return
+                }
+                if weatherInfoList.count > 0 {
+                    self.weatherInfoList.removeAll(where: { $0.city == city })
+                    self.weatherInfoList.append(contentsOf: weatherInfoList)
+                    self.view?.set(weatherInfoList: self.weatherInfoList)
+                }
+                DispatchQueue.main.async { [weak self] in
+                    self?.view?.setActivityIndicator(for: city, isRunning: false)
+                    self?.view?.reloadView()
+                }
             }
         }
     }
@@ -85,13 +91,17 @@ class CitiesListPresenter {
 
 extension CitiesListPresenter: CitiesListViewOutput {
     func viewDidLoad() {
-        cities = getCities()
-        if cities.count == 0 && FirstLaunch().isFirstLaunch {
-            cities = preloadCities()
-        }
+        cities = getCities(isFirstLaunch: FirstLaunch().isFirstLaunch)
+        weatherInfoList = cities.flatMap { fetchWeatherInfo(for: $0) }
+        
         view?.set(cities: cities)
+        view?.set(weatherInfoList: weatherInfoList)
         view?.reloadView()
+        
         cities.forEach { displayWeather(for: $0) }
+    }
+    
+    func viewDidAppear() {
     }
     
     func showCitySearch() {

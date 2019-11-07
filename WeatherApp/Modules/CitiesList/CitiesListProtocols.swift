@@ -13,12 +13,14 @@ typealias CityWeatherInfo = (City, Double?)
 protocol CitiesListViewInput: class {
     func set(cities: [City])
     func set(weatherInfoList: [WeatherInfo])
+    func setActivityIndicator(for city: City, isRunning: Bool)
     func enableAddCityButton(_ isEnabled: Bool)
     func reloadView()
 }
 
 protocol CitiesListViewOutput {
     func viewDidLoad()
+    func viewDidAppear()
     func showCitySearch()
     func reloadData()
 }

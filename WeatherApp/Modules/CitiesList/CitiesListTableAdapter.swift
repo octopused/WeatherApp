@@ -43,6 +43,12 @@ class CitiesListTableAdapter: NSObject {
         self.weatherInfoList = weatherInfoList
     }
 
+    func indexPath(for city: City) -> IndexPath? {
+        guard let rowIndex = cities.firstIndex(of: city) else {
+            return nil
+        }
+        return IndexPath(row: rowIndex, section: 0)
+    }
 }
 
 extension CitiesListTableAdapter: UITableViewDataSource, UITableViewDelegate {
